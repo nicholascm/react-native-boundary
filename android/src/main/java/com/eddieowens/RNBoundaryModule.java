@@ -1,11 +1,14 @@
 package com.eddieowens;
 
 import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.eddieowens.receivers.BoundaryEventBroadcastReceiver;
@@ -18,12 +21,15 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import android.content.Context;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,8 +51,28 @@ public class RNBoundaryModule extends ReactContextBaseJavaModule implements Life
         getReactApplicationContext().addLifecycleEventListener(this);
     }
 
+    @TargetApi(21)
+    @ReactMethod
+    public void alarmTest(final Promise promise)
+    {
+//        AlarmManager almMgr = (AlarmManager) getReactApplicationContext().getSystemService(Context.ALARM_SERVICE);
+//        promise.resolve(almMgr.getNextAlarmClock());
+    }
+
+    @ReactMethod
+    public void getCarrierInfo(final Promise promise) {
+        TelephonyManager telMgr = (TelephonyManager) getReactApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        telMgr.getNetworkOperatorName();
+        WritableMap map = Arguments.createMap();
+        map.putString("NetworkOperatorName",  telMgr.getNetworkOperatorName());
+        map.putString("SimOperatorName", telMgr.getSimOperatorName());
+        promise.resolve(map);
+    }
     @ReactMethod
     public void testMethod(final Promise promise) {
+        Log.i(TAG,"I'm right here");
+        Context context = getReactApplicationContext();
+        Toast.makeText(context, "HEYYYYY", Toast.LENGTH_LONG).show();
         promise.resolve("HERE WE ARE!");
     }
 

@@ -58,10 +58,15 @@ export default {
     return boundaryEventEmitter.removeAllListeners(event);
   },
 
+  alarmTest:() => RNBoundary.alarmTest(),
   testMethod: () => {
-    RNBoundary.testMethod();
-  }
+    console.log('js here');
+    return RNBoundary.testMethod();
+  },
 
+  getCarrierInfo: () => {
+    return RNBoundary.getCarrierInfo();
+  },
   removeAll: () => {
     return RNBoundary.removeAll();
   },
