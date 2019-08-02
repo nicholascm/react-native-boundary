@@ -9,6 +9,7 @@ const boundaryEventEmitter = new NativeEventEmitter(RNBoundary);
 const Events = {
   EXIT: "onExit",
   ENTER: "onEnter",
+  DWELL: "onDwell"
 };
 
 export {
@@ -56,6 +57,10 @@ export default {
 
     return boundaryEventEmitter.removeAllListeners(event);
   },
+
+  testMethod: () => {
+    RNBoundary.testMethod();
+  }
 
   removeAll: () => {
     return RNBoundary.removeAll();

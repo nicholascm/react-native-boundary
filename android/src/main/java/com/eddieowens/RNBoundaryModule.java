@@ -46,6 +46,11 @@ public class RNBoundaryModule extends ReactContextBaseJavaModule implements Life
     }
 
     @ReactMethod
+    public void testMethod(final Promise promise) {
+        promise.resolve("HERE WE ARE!");
+    }
+
+    @ReactMethod
     public void removeAll(final Promise promise) {
         mGeofencingClient.removeGeofences(getBoundaryPendingIntent())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -103,7 +108,8 @@ public class RNBoundaryModule extends ReactContextBaseJavaModule implements Life
         return new Geofence.Builder()
                 .setRequestId(readableMap.getString("id"))
                 .setCircularRegion(readableMap.getDouble("lat"), readableMap.getDouble("lng"), (float) readableMap.getDouble("radius"))
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT  | Geofence.GEOFENCE_TRANSITION_DWELL)
+                .setLoiteringDelay(1000)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .build();
     }
@@ -118,7 +124,7 @@ public class RNBoundaryModule extends ReactContextBaseJavaModule implements Life
 
     private GeofencingRequest createGeofenceRequest(List<Geofence> geofences) {
         return new GeofencingRequest.Builder()
-                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER|GeofencingRequest.INITIAL_TRIGGER_DWELL)
                 .addGeofences(geofences)
                 .build();
     }
@@ -126,7 +132,7 @@ public class RNBoundaryModule extends ReactContextBaseJavaModule implements Life
     private GeofencingRequest createGeofenceRequest(Geofence geofence) {
         return new GeofencingRequest.Builder()
                 .addGeofence(geofence)
-                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER|GeofencingRequest.INITIAL_TRIGGER_DWELL)
                 .build();
     }
 

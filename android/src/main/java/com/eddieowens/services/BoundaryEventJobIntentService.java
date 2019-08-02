@@ -21,6 +21,7 @@ public class BoundaryEventJobIntentService extends JobIntentService {
 
     public static final String ON_ENTER = "onEnter";
     public static final String ON_EXIT = "onExit";
+    public static final String ON_DWELL = "onDwell";
 
     public BoundaryEventJobIntentService() {
         super();
@@ -53,6 +54,13 @@ public class BoundaryEventJobIntentService extends JobIntentService {
                 }
                 sendEvent(this.getApplicationContext(), ON_EXIT, exitingGeofences);
                 break;
+            case Geofence.GEOFENCE_TRANSITION_DWELL:
+                Log.i(TAG, "Dwell geofence event detected. Sending event.");
+                final ArrayList<String> dwellGeofences = new ArrayList<>();
+                for (Geofence geofence : geofencingEvent.getTriggeringGeofences()) {
+                    dwellGeofences.add(geofence.getRequestId());
+                }
+                sendEvent(this.getApplicationContext(), ON_DWELL, dwellGeofences);
         }
     }
 

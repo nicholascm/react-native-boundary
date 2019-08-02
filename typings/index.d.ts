@@ -3,6 +3,7 @@ import {EmitterSubscription} from 'react-native';
 export enum Events {
     EXIT = 'onExit',
     ENTER = 'onEnter',
+    DWELL = 'onDwell'
 }
 
 export interface Boundary {
@@ -10,6 +11,7 @@ export interface Boundary {
     lat: number;
     lng: number;
     radius: number;
+    loiteringDelay?: number;
 }
 
 export interface BoundaryStatic {
